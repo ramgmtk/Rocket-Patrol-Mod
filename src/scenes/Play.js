@@ -5,9 +5,11 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images and tile sprite
-        this.load.image('rocket', './assets/rocket.png') //(string::key, location of image)
-        this.load.image('spaceship', './assets/spaceship.png')
-        this.load.image('starfield', './assets/starfield.png')
+        this.load.image('rocket', './assets/rocket.png'); //(string::key, location of image)
+        this.load.image('spaceship', './assets/spaceship.png');
+        this.load.image('starfield', './assets/starfield.png');
+        this.load.image('speedship', './assets/speed_ship.png');
+        this.load.image('meteorfield', './assets/meteorfield.png');
 
         //load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
@@ -15,21 +17,22 @@ class Play extends Phaser.Scene {
 
     create() {
         //place the tile sprite
-        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0,0);
+        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0,0).setDepth(0);
+        this.meteorfield = this.add.tileSprite(0, 0, 640, 480, 'meteorfield').setOrigin(0,0).setDepth(0);
 
         // white rectangle borders
-        this.add.rectangle(5, 5, 630, 32, 0xFFFFFF).setOrigin(0, 0); //(x,y,width,height) default origin is center of rectangle
-        this.add.rectangle(5, 443, 630, 32, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(5, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(603, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
+        this.add.rectangle(5, 5, 630, 32, 0xFFFFFF).setOrigin(0, 0).setDepth(1); //(x,y,width,height) default origin is center of rectangle
+        this.add.rectangle(5, 443, 630, 32, 0xFFFFFF).setOrigin(0, 0).setDepth(1);
+        this.add.rectangle(5, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0).setDepth(1);
+        this.add.rectangle(603, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0).setDepth(1);
 
         //green UI background
         this.add.rectangle(37, 42, 566, 64, 0x00FF00).setOrigin(0, 0);
 
         // add spaceship (x3)
-        this.ship01 = new Spaceship(this, game.config.width, 196, 'spaceship', 0, 10).setOrigin(0, 0);
-        this.ship02 = new Spaceship(this, game.config.width + 96, 260, 'spaceship', 0, 20).setOrigin(0, 0);
-        this.ship03 = new Spaceship(this, game.config.width, 324, 'spaceship', 0, 10).setOrigin(0, 0);
+        this.ship01 = new Spaceship(this, game.config.width, 196, 'spaceship', 0, 30, 0).setOrigin(0, 0);
+        this.ship02 = new Spaceship(this, game.config.width + 96, 260, 'speedship', 0, 100, 3).setOrigin(0, 0);
+        this.ship03 = new Spaceship(this, game.config.width, 324, 'spaceship', 0, 30, 0).setOrigin(0, 0);
 
         //p2 declatation
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -67,10 +70,10 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100,
         }
-        this.scoreLeft = this.add.text(69, 54,  this.p1Rocket.score, scoreConfig);
-        this.scoreRight = this.add.text(471, 54, this.p2Rocket.score, scoreConfig);
-        this.add.text(69, 54, 'P1', {align: 'left'});
-        this.add.text(471, 54, 'P2', {align: 'left'});
+        this.scoreLeft = this.add.text(69, 54,  this.p1Rocket.score, scoreConfig).setDepth(1);
+        this.scoreRight = this.add.text(471, 54, this.p2Rocket.score, scoreConfig).setDepth(1);
+        this.add.text(69, 54, 'P1', {align: 'left'}).setDepth(1);
+        this.add.text(471, 54, 'P2', {align: 'left'}).setDepth(1);
 
         //game over flag
         this.gameOver = false;
@@ -95,6 +98,7 @@ class Play extends Phaser.Scene {
         }
         //scroll starfield
         this.starfield.tilePositionX -= 4;
+        this.meteorfield.tilePositionX -= 2;
 
         if (!this.gameOver) {
             this.p1Rocket.update();
