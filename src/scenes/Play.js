@@ -80,7 +80,8 @@ class Play extends Phaser.Scene {
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Fire to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, this.p1Score > this.p2Score ? 'Player 1 wins' : 'Player 2 wins', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 128, 'Fire to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
     }
@@ -131,6 +132,14 @@ class Play extends Phaser.Scene {
             this.p2Rocket.reset();
             this.shipExplode(this.ship01, false);
         }
+
+        if (this.checkCollision(this.p1Rocket, this.p2Rocket)) {
+            let x = this.p1Rocket.x;
+            let y = (this.p1Rocket.y + this.p2Rocket.y)/2;
+            this.p1Rocket.reset();
+            this.p2Rocket.reset();
+            this.rocketExplode(x, y);
+        }
     }
 
     checkCollision(rocket, ship) {
@@ -140,6 +149,21 @@ class Play extends Phaser.Scene {
             } else {
                 return false;
             }
+    }
+
+    rocketExplode(x, y) {
+        let boom = this.add.sprite(x, y, 'explosion').setOrigin(0, 0);
+        boom.anims.play('explode');
+        boom.on('animationcomplete', () => {
+            boom.destroy();
+        });
+        this.p1Score -= 50;
+        this.p2Score -= 50;
+        if (this.p1Score < 0) this.p1Score = 0;
+        if (this.p2Score < 0) this.p2Score = 0;
+        this.scoreLeft.text = this.p1Score;
+        this.scoreRight.text = this.p2Score;
+        this.sound.play('sfx_explosion');
     }
 
     shipExplode(ship, player_one) {
