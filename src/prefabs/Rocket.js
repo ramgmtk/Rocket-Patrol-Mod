@@ -20,13 +20,13 @@ class Rocket extends Phaser.GameObjects.Sprite {
     
     update() {
         //left/right movement
-        if(!this.isFiring) {
-            if(this.leftKey.isDown && this.x >= 47) { //cannot go beyond border
-                this.x -= 2; //2 represent rocket speed
-            } else if (this.rightKey.isDown && this.x <= 578) { //598 is too big
-                this.x += 2;
-            }
-         }
+        //if(!this.isFiring) {
+        if(this.leftKey.isDown && this.x >= 47) { //cannot go beyond border
+            this.x -= 2; //2 represent rocket speed
+        } else if (this.rightKey.isDown && this.x <= 578) { //598 is too big
+            this.x += 2;
+        }
+         //}
         //fire button
         if (Phaser.Input.Keyboard.JustDown(this.fireKey)) { //just down waits till player takes finger off button
             this.isFiring = true;
@@ -37,7 +37,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
         //if fire, vmoed up
         if (this.p1flag) {
             if (this.isFiring && this.y >= 108) {
-                this.y -= 2;
+                this.y -= 4;
             }
             //reset on miss
             if (this.y < 108) {
@@ -46,7 +46,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
         }
         else {
             if (this.isFiring && this.y <= 431) {
-                this.y += 2;
+                this.y += 4;
             }
             //reset on miss
             if (this.y > 431) {
