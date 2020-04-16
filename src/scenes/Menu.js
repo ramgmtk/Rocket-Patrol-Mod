@@ -29,8 +29,8 @@ class Menu extends Phaser.Scene {
         let textSpacer = 64;
         
         this.add.text(centerX, centerY - textSpacer, 'ROCKET PATROL 2 Player mode', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY, 'P1 Use <- ->, arrows to move & (F) to Fire', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + textSpacer, 'P2 Use \'a\' \'d\', keys to move & (ENTER) to Fire', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY, 'P1 Use <- ->, arrows to move & (ENTER) to Fire', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer, 'P2 Use \'a\' \'d\', keys to move & (F) to Fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
         this.add.text(centerX, centerY + textSpacer + textSpacer, 'Press <- for Easy or -> for Hard', menuConfig).setOrigin(0.5)
